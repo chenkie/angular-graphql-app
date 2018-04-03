@@ -9,85 +9,16 @@ import { Apollo } from 'apollo-angular';
 import 'rxjs/add/operator/switchMap';
 
 const fragments = {
-  courses: gql`
-    fragment courseFields on CourseType {
-      id
-      name
-      description
-      level
-    }
-  `
+  courses: gql``
 };
 
-const AllStudentsQuery = gql`
-  query allStudents {
-    allStudents {
-      id
-      firstName
-      lastName
-      active
-      courses {
-        ...courseFields
-      }
-    }
-  }
-  ${fragments.courses}
-`;
+const AllStudentsQuery = gql``;
 
-const CreateStudentMutation = gql`
-  mutation(
-    $firstName: String!
-    $lastName: String!
-    $active: Boolean!
-    $coursesIds: [ID!]!
-  ) {
-    createStudent(
-      firstName: $firstName
-      lastName: $lastName
-      active: $active
-      coursesIds: $coursesIds
-    ) {
-      id
-      firstName
-      lastName
-      active
-    }
-  }
-`;
+const CreateStudentMutation = gql``;
 
-const UpdateStudentMutation = gql`
-  mutation(
-    $id: ID!
-    $firstName: String!
-    $lastName: String!
-    $active: Boolean!
-    $coursesIds: [ID!]!
-  ) {
-    updateStudent(
-      id: $id
-      firstName: $firstName
-      lastName: $lastName
-      active: $active
-      coursesIds: $coursesIds
-    ) {
-      id
-      firstName
-      lastName
-      active
-    }
-  }
-`;
+const UpdateStudentMutation = gql``;
 
-const DeleteStudentMutation = gql`
-  mutation($id: ID!) {
-    deleteStudent(id: $id) {
-      id
-      firstName
-      lastName
-      active
-    }
-  }
-`;
+const DeleteStudentMutation = gql``;
 
 interface QueryResponse {
   allStudents;
