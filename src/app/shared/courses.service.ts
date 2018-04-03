@@ -18,11 +18,7 @@ const AllCoursesQuery = gql`
 
 const CreateCourseMutation = gql`
   mutation($name: String!, $description: String!, $level: String!) {
-    createCourse (
-      name: $name
-      description: $description
-      level: $level
-  ) {
+    createCourse(name: $name, description: $description, level: $level) {
       id
       name
       description
@@ -32,25 +28,12 @@ const CreateCourseMutation = gql`
 `;
 
 const UpdateCourseMutation = gql`
-  mutation($id:ID!, $name: String!, $description: String!, $level: String!) {
-    updateCourse (
+  mutation($id: ID!, $name: String!, $description: String!, $level: String!) {
+    updateCourse(
       id: $id
       name: $name
       description: $description
       level: $level
-  ) {
-      id
-      name
-      description
-      level
-    }
-  }
-`;
-
-const DeleteCourseMutation = gql`
-  mutation($id:ID!) {
-    deleteCourse (
-      id: $id
     ) {
       id
       name
@@ -60,20 +43,31 @@ const DeleteCourseMutation = gql`
   }
 `;
 
+const DeleteCourseMutation = gql`
+  mutation($id: ID!) {
+    deleteCourse(id: $id) {
+      id
+      name
+      description
+      level
+    }
+  }
+`;
+
 interface QueryResponse {
-  allCourses
+  allCourses;
 }
 
 @Injectable()
 export class CoursesService {
-  constructor(private apollo: Apollo) {
-  }
+  constructor(private apollo: Apollo) {}
 
   all() {
-    return this.apollo.watchQuery<QueryResponse>({
+    return this.apollo
+      .watchQuery<QueryResponse>({
         query: AllCoursesQuery
       })
-      .map(({data}) => data.allCourses);
+      .map(({ data }) => data.allCourses);
   }
 
   create(course: Course) {
@@ -84,9 +78,11 @@ export class CoursesService {
         description: course.description,
         level: course.level
       },
-      refetchQueries: [{
-        query: AllCoursesQuery
-      }]
+      refetchQueries: [
+        {
+          query: AllCoursesQuery
+        }
+      ]
     });
   }
 
@@ -99,21 +95,26 @@ export class CoursesService {
         description: course.description,
         level: course.level
       },
-      refetchQueries: [{
-        query: AllCoursesQuery
-      }]
+      refetchQueries: [
+        {
+          query: AllCoursesQuery
+        }
+      ]
     });
   }
 
   delete(course: Course) {
+    console.log(course);
     return this.apollo.mutate({
       mutation: DeleteCourseMutation,
       variables: {
         id: course.id
       },
-      refetchQueries: [{
-        query: AllCoursesQuery
-      }]
+      refetchQueries: [
+        {
+          query: AllCoursesQuery
+        }
+      ]
     });
   }
 }
